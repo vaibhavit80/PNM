@@ -23,6 +23,7 @@ export class SignupPage implements OnInit {
  user: User
 
   constructor(private fun:FunctionsService, private menuCtrl: MenuController, private modalController: ModalController, private data: DataService) { 
+ this.user = new User();
   }
 
   ngOnInit() {

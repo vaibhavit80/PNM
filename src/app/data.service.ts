@@ -13,143 +13,143 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { environment } from 'src/environments/environment';
-export interface HomeTab {
+export class HomeTab {
   title: string
 };
 
-export interface NotificationsCard {
-  image: string,
-  title: string,
+export class NotificationsCard {
+  image: string;
+  title: string;
   time: number
 }
 
-export interface Notification {
-  all: Array<NotificationsCard>,
-  deals: Array<NotificationsCard>,
-  orders: Array<NotificationsCard>,
+export class Notification {
+  all: Array<NotificationsCard>;
+  deals: Array<NotificationsCard>;
+  orders: Array<NotificationsCard>;
   others: Array<NotificationsCard>
 }
 
-export interface Review {
-  image: string,
-  name: string,
-  comment: string,
-  rating: number,
+export class Review {
+  image: string;
+  name: string;
+  comment: string;
+  rating: number;
   images: Array<string>
 }
 
-export interface SearchParams {
-  searchterm: string,
-  category: any,
-  vehicle_type : any,
-  company: string,
+export class SearchParams {
+  searchterm: string;
+  category: any;
+  vehicle_type : any;
+  company: string;
   tyre_types: string
 }
 
-export interface Product {
-  id:any,
-  name: string,
-  vehicle_type : any,
-  company: any,
-  tyre_type: any,
-  image: Array<string>,
-  size: string,
-  color: string,
-  cost_price: number,
-  discount: number,
-  offer: boolean,
-  stock: number,
-  description: string,
-  currency: string,
-  bought: number,
-  shipping: number,
-  rating: number,
-  rating_count: number,
-  store_rate: number,
-  store_rating: number,
-  store_rating_count: number,
-  sold_by: string,
-  specs: string,
-  reviews: Array<Review>,
-  store_reviews: Array<Review>,
+export class Product {
+  id:any;
+  name: string;
+  vehicle_type : any;
+  company: any;
+  tyre_type: any;
+  image: Array<string>;
+  size: string;
+  color: string;
+  cost_price: number;
+  discount: number;
+  offer: boolean;
+  stock: number;
+  description: string;
+  currency: string;
+  bought: number;
+  shipping: number;
+  rating: number;
+  rating_count: number;
+  store_rate: number;
+  store_rating: number;
+  store_rating_count: number;
+  sold_by: string;
+  specs: string;
+  reviews: Array<Review>;
+  store_reviews: Array<Review>;
   sizing: {
-    small: number,
-    okay: number,
+    small: number;
+    okay: number;
     large: number
-  },
+  };
   buyer_guarantee: string
 }
-export interface User {
-  id: any,
-  fname: string,
-  lname: string,
-  mobile: string,
-  email: string,
-  password: string,
-  address: Array<Address>,
-  billing: Array<any>,
-  uid: string,
-  did: string,
+export class User {
+  id: any;
+  fname: string;
+  lname: string;
+  mobile: string;
+  email: string;
+  password: string;
+  address: Array<Address>;
+  billing: Array<any>;
+  uid: string;
+  did: string;
   aid: string
 }
 
-export interface Address {
-  user_id: any,
-  first_name: string,
-  last_name: string,
-  address_line_1: string,
-  address_line_2: string,
-  country: string,
-  state: string,
-  city: string,
-  zipcode: number,
+export class Address {
+  user_id: any;
+  first_name: string;
+  last_name: string;
+  address_line_1: string;
+  address_line_2: string;
+  country: string;
+  state: string;
+  city: string;
+  zipcode: number;
   phone_number: number
 }
-export interface Category {
-  Id: any,
+export class Category {
+  Id: any;
   Name: string
 }
-export interface CategoryTabs {
-  CategoryId: any,
+export class CategoryTabs {
+  CategoryId: any;
   Products: Array<Product>
 }
-export interface Company {
-  Id: any,
+export class Company {
+  Id: any;
   Name: string
 }
-export interface Cat_Company {
-  CategoryId: any,
+export class Cat_Company {
+  CategoryId: any;
   Companies: Array<Company>
 }
-export interface vehicle_type {
-  Id: any,
+export class vehicle_type {
+  Id: any;
   Name: string
 }
-export interface Cart {
-  user_id: any,
-  product: Product,
+export class Cart {
+  user_id: any;
+  product: Product;
   quantity: number
 }
-export interface AuthData {
-  authstatus:boolean,
+export class AuthData {
+  authstatus:boolean;
   userInfo: User
 }
-export interface Order {
-  id:any,
-  user_id: any,
-  order_date: Date,
-  amount: number,
-  delivery_date: Date,
-  status: string,
-  billing_address: Address,
-  shipping_address: Address,
+export class Order {
+  id:any;
+  user_id: any;
+  order_date: Date;
+  amount: number;
+  delivery_date: Date;
+  status: string;
+  billing_address: Address;
+  shipping_address: Address;
   tax: number
 }
-export interface OrderProduct {
-  order_id:any,
-  product: Product,
-  amount:any,
-  quantity: any
+export class OrderProduct {
+  order_id:any;
+  product: Product;
+  amount:any;
+  quantity: any;
 }
 @Injectable({
   providedIn: 'root'

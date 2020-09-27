@@ -21,6 +21,8 @@
     "@angular/platform-browser-dynamic": "^7.2.2",
     "@angular/router": "^7.2.2",
     "@ionic-native/core": "5.0.0-beta.21",
+    "@ionic-native/facebook": "^5.28.0",
+    "@ionic-native/google-plus": "^5.28.0",
     "@ionic-native/social-sharing": "^5.0.0-beta.23",
     "@ionic-native/splash-screen": "5.0.0-beta.21",
     "@ionic-native/status-bar": "5.0.0-beta.21",
@@ -29,6 +31,8 @@
     "cordova-android": "^8.1.0",
     "cordova-ios": "4.5.5",
     "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-facebook4": "^6.4.0",
+    "cordova-plugin-googleplus": "^8.5.1",
     "cordova-plugin-ionic-keyboard": "^2.1.3",
     "cordova-plugin-ionic-webview": "^2.3.1",
     "cordova-plugin-splashscreen": "^5.0.2",
@@ -80,7 +84,18 @@
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
       "cordova-plugin-ionic-keyboard": {},
-      "cordova-plugin-x-socialsharing": {}
+      "cordova-plugin-x-socialsharing": {},
+      "cordova-plugin-googleplus": {
+        "REVERSED_CLIENT_ID": "com.PunnuMistri.shop",
+        "WEB_APPLICATION_CLIENT_ID": "326714755087-g3pqf2qfl6pc0eai63o1bckgahsbgt4t.apps.googleusercontent.com",
+        "PLAY_SERVICES_VERSION": "15.0.1"
+      },
+      "cordova-plugin-facebook4": {
+        "APP_ID": "138186586379417",
+        "APP_NAME": "MeraBand",
+        "FACEBOOK_HYBRID_APP_EVENTS": "false",
+        "FACEBOOK_ANDROID_SDK_VERSION": "5.13.0"
+      }
     },
     "platforms": [
       "ios",
