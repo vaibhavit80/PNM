@@ -1,0 +1,67 @@
+<!-- /**
+ * PunnuMistri - E-commerce app starter Ionic 4( )
+ *
+ * Copyright © 2018-present PunnuMistri. All rights reserved.
+ *
+ * This source code is licensed as per the terms found in the
+ * LICENSE.md file in the root directory of this source .
+ */ -->
+
+<ion-header class="mybg">
+  <ion-toolbar color="mytheme">
+    <ion-buttons slot="start">
+      <ion-menu-button color="light"></ion-menu-button>
+    </ion-buttons>
+      <ion-input type="text" [(ngModel)]="searchterm" padding-start placeholder="I'm shopping for..." class="search-bar"></ion-input>
+    <ion-buttons slot="end">
+      <ion-button (click)='onSearch()'>
+        <ion-icon name="search" slot="icon-only" no-margin class="white top-btn"></ion-icon>
+      </ion-button>      
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-text><strong>
+      <h5 no-margin>Popular Vehicle Searches</h5>
+    </strong></ion-text>
+  <ion-row margin-vertical align-items-center class="row">
+    <div class="btn" *ngFor="let b of vehicles">
+      <ion-text [ngClass]="{'filter-btn':vehno == b.Id}" (click)="getColor(b.Id)">{{b.Name}}</ion-text>
+    </div>
+  </ion-row>
+  <div class="sep" margin-bottom></div>
+  <ion-row>
+    <ion-col size="8">
+      <ion-text><strong>
+          <h5 no-margin>Recently Viewed</h5>
+        </strong></ion-text>
+    </ion-col>
+    <ion-col size="4" text-end>
+      <ion-text [routerLink]="['/home', {'id':0}]" routerDirection="forward"><span class="view">View All</span></ion-text>
+    </ion-col>
+  </ion-row>
+  <div>
+    <ion-row>
+      <ion-col *ngFor="let data of recent;" size="6">
+        <ion-card class="card" no-margin (click)="open(data)">
+          <ion-badge class="badge" *ngIf="data.offer">{{data.discount}}%</ion-badge>
+          <img [src]="data.image[0]" [alt]="data.name">
+          <ion-text class="filter-btn">{{data.name}}</ion-text>
+          <ion-card-content>
+            <ion-card-title>
+              <ion-row>
+                <ion-col *ngIf="data.offer" no-padding>
+                  <ion-text text-left><span class="price"><span class="inline">{{data.currency}}{{data.cost_price}}</span> <strong>{{data.currency}}{{fun.calculate(data.cost_price, data.discount)}}</strong></span></ion-text>
+                </ion-col>
+                <ion-col *ngIf="!data.offer" no-padding>
+                  <ion-text text-left><span class="price"><strong>{{data.currency}}{{data.cost_price}}</strong></span></ion-text>
+                </ion-col>
+              </ion-row>
+            </ion-card-title>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>
