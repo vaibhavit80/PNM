@@ -306,9 +306,10 @@ UUIDs:any;
   setCurrentUserDetail(user : UserDO){
    this.current_user.address = [];
    this.current_user.aid = user.aid;
+   this.current_user.id = user.id;
    this.current_user.did = user.did;
    this.current_user.email = user.email;
-   this.current_user.fname = user.email;
+   this.current_user.fname = user.fname;
    this.current_user.latitude = user.latitude;
    this.current_user.lname = user.lname;
    this.current_user.longitude = user.longitude;

@@ -19,9 +19,9 @@ import { MenuController, AlertController, NavController } from '@ionic/angular';
 export class AccountsettingsPage implements OnInit {
 
   items = [
-    { name: 'Country/Region', url: 'country' },
+    //{ name: 'Country/Region', url: 'country' },
     { name: 'Update Profile', url: 'update-profile' },
-    { name: 'Change Email Address', url: 'changeemail' },
+    //{ name: 'Change Email Address', url: 'changeemail' },
     { name: 'Change Password', url: 'changepassword' },
     { name: 'Deactivate Account', url: 'deactivate' }
   ];

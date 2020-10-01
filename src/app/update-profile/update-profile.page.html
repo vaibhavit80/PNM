@@ -1,9 +1,34 @@
+
 <ion-header>
-  <ion-toolbar>
-    <ion-title>UpdateProfile</ion-title>
+  <ion-toolbar color="mytheme">
+    <ion-buttons slot="start">
+        <ion-back-button color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title color="light">Update Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-text><h3 no-margin margin-bottom text-center class="title">{{user.email}}</h3></ion-text>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-input type="text" placeholder="First Name" [(ngModel)]="user.fname" class="input" padding-horizontal></ion-input>
+      </ion-col>
+      <ion-col>
+        <ion-input type="text" placeholder="Last Name" [(ngModel)]="user.lname" class="input" padding-horizontal></ion-input>
+      </ion-col>
+    </ion-row>
+     <ion-row>
+      <ion-col>
+        <ion-input clearInput type="text" placeholder="Mobile" [(ngModel)]="user.mobile" class="input" padding-horizontal></ion-input>
+      </ion-col>
+    </ion-row>
 
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" color="primary" (click)="signup()" color="mytheme"><strong class="white">Submit</strong></ion-button>
+      </ion-col>
+    </ion-row>
+ </ion-grid>
 </ion-content>
