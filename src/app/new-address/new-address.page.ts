@@ -38,7 +38,7 @@ export class NewAddressPage implements OnInit {
 
   countries: any;
 
-  constructor(private menuCtrl: MenuController, private activatedRoute: ActivatedRoute, private fun: FunctionsService, private dataService: DataService, private http: HttpClient) {
+  constructor(private menuCtrl: MenuController, private activatedRoute: ActivatedRoute, public fun: FunctionsService, public dataService: DataService, private http: HttpClient) {
     this.get();
     this.flag = this.activatedRoute.snapshot.paramMap.get('id');
   }

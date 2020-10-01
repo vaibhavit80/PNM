@@ -28,6 +28,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [FaqPage]
+  declarations: []
 })
 export class FaqPageModule {}

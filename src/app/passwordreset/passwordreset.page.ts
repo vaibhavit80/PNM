@@ -20,7 +20,7 @@ export class PasswordresetPage implements OnInit {
 
   email = "";
 
-  constructor(private fun: FunctionsService, private menuCtrl: MenuController) { 
+  constructor(public fun: FunctionsService, private menuCtrl: MenuController) { 
   }
 
   ngOnInit() {

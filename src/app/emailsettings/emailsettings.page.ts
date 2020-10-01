@@ -18,7 +18,7 @@ import { FunctionsService } from '../functions.service';
 })
 export class EmailsettingsPage implements OnInit {
 
-  constructor(private menuCtrl: MenuController, private fun: FunctionsService) { }
+  constructor(private menuCtrl: MenuController, public fun: FunctionsService) { }
 
   ngOnInit() {
   }

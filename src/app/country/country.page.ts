@@ -21,7 +21,7 @@ export class CountryPage implements OnInit {
 
   data: any = [];
 
-  constructor(private loadingController: LoadingController, private fun: FunctionsService, private http: HttpClient, private menuCtrl: MenuController) {
+  constructor(private loadingController: LoadingController, public fun: FunctionsService, private http: HttpClient, private menuCtrl: MenuController) {
     
     this.present();
     http.get('https://restcountries.eu/rest/v2/all').subscribe(d=>{

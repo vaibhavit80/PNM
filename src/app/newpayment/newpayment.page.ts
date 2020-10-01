@@ -19,7 +19,7 @@ import { FunctionsService } from '../functions.service';
 })
 export class NewpaymentPage implements OnInit {
 
-  constructor(private menuCtrl: MenuController, private fun: FunctionsService, private dataService: DataService, private alertController: AlertController) { }
+  constructor(private menuCtrl: MenuController, public fun: FunctionsService, public dataService: DataService, private alertController: AlertController) { }
 
   ngOnInit() {
   }

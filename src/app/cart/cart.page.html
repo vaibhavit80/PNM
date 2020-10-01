@@ -136,8 +136,15 @@
     </div>
   </div>
 </ion-content>
-<ion-footer *ngIf="show" (click)="fun.checkout()">
-  <ion-toolbar color="success">
-    <ion-title>Checkout</ion-title>
-  </ion-toolbar>
+<ion-footer class="footer" align-items-center *ngIf="show" >
+  <ion-row align-items-center>
+    <ion-col padding>
+      <ion-text>
+        <h3 no-margin class="foot-highlight">{{data[0].product.currency}}{{fix(add())}}</h3>
+      </ion-text>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button (click)="fun.checkout()" float-right class="white foot-btn" color="orange" no-margin expand="block"><strong>Checkout</strong></ion-button>
+    </ion-col>
+  </ion-row>
 </ion-footer>

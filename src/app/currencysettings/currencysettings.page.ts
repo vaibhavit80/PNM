@@ -22,7 +22,7 @@ export class CurrencysettingsPage implements OnInit {
   currency = "IND";
   data;
 
-  constructor(private fun: FunctionsService, private menuCtrl: MenuController, private http: HttpClient) { }
+  constructor(public fun: FunctionsService, private menuCtrl: MenuController, private http: HttpClient) { }
 
   ngOnInit() {
     this.get();

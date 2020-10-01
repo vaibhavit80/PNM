@@ -21,7 +21,7 @@ export class OrderinfoPage implements OnInit {
 
   order: Order;
 order_product: Array<OrderProduct>;
-  constructor(private modalController: ModalController, private dataService: DataService, private params: NavParams,private nav: NavController, private fun: FunctionsService) {
+  constructor(private modalController: ModalController, public dataService: DataService, private params: NavParams,private nav: NavController, public fun: FunctionsService) {
     this.order = params.get('value');
     this.order_product = this.dataService.getOrderProducts(this.order.id);
   }

@@ -29,7 +29,7 @@ export class SupportPage implements OnInit {
 
   input = '';
 
-  constructor(private fun: FunctionsService, private dataService: DataService, private menuCtrl: MenuController) { }
+  constructor(public fun: FunctionsService, public dataService: DataService, private menuCtrl: MenuController) { }
 
   ngOnInit() {
   }

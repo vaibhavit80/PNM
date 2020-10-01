@@ -10,7 +10,9 @@
 <ion-header>
   <ion-toolbar color="mytheme">
     <ion-buttons slot="start">
-      <ion-back-button color="light"></ion-back-button>
+      <ion-button (click)="fun.back()">
+        <ion-icon name="arrow-back" slot="icon-only"  class="white top-btn" no-margin></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title color="light">Billing</ion-title>
   </ion-toolbar>
@@ -24,7 +26,7 @@
         <ion-label>Select payment method</ion-label>
       </ion-list-header>
 
-      <ion-item *ngFor="let add of dataService.current_user.billing; let i = index;">
+      <ion-item *ngFor="let add of dataService.BillingInfos; let i = index;">
         <ion-label>
           <ion-row class="full" align-items-center>
             <ion-col size="10">
@@ -119,7 +121,7 @@
   </ion-list>
 </ion-content>
 <ion-footer (click)="done()">
-  <ion-toolbar color="success">
+  <ion-toolbar color="orange">
     <ion-title>Done</ion-title>
   </ion-toolbar>
 </ion-footer>

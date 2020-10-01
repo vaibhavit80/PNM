@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 import { FunctionsService } from '../functions.service';
 import { MenuController, ModalController } from '@ionic/angular';
 import { InfomodalPage } from '../infomodal/infomodal.page';
-import { DataService, User } from '../data.service';
+import { DataService, User, UserDO } from '../data.service';
 
 @Component({
   selector: 'app-signup',
@@ -20,10 +20,10 @@ import { DataService, User } from '../data.service';
 })
 export class SignupPage implements OnInit {
 
- user: User
+ user: UserDO
 
-  constructor(private fun:FunctionsService, private menuCtrl: MenuController, private modalController: ModalController, private data: DataService) { 
- this.user = new User();
+  constructor(public fun:FunctionsService, private menuCtrl: MenuController, private modalController: ModalController, private data: DataService) { 
+ this.user = new UserDO();
   }
 
   ngOnInit() {
@@ -36,16 +36,28 @@ export class SignupPage implements OnInit {
 
   signup(){
     if(this.user.fname != '' && this.user.lname != '' && this.user.mobile && this.user.email != '' && this.user.password != '' && this.fun.validateEmail(this.user.email)){
+      this.fun.showloader("Signing User...");
+      this.user.did = this.data.DeviceId;
+      this.user.aid = this.data.UUIDs;
+      localStorage.setItem('user', this.user.email);
       this.data.signup(this.user).subscribe(data => {
         // tslint:disable-next-line: no-debugger
         if(data.Error === true)
         {
+          localStorage.setItem('user', 'NA');
+          localStorage.setItem('IsLogin', "false");
+          this.fun.dismissLoader();
           this.fun.presentToast('Something went wrong!', true, 'bottom', 2100);
           return;
         }
+        localStorage.setItem('IsLogin', "true");
+        this.fun.dismissLoader();
         this.fun.navigate('home', false);
       },
       error => {
+        localStorage.setItem('user', 'NA');
+        localStorage.setItem('IsLogin', "false");
+        this.fun.dismissLoader();
         this.fun.presentToast('Invalid Request!', true, 'bottom', 2100);
       });
     }

@@ -22,7 +22,7 @@ export class ProductlistPage implements OnInit {
 
   @Input() recieved_data: Array<Product>;
 
-  constructor(private fun: FunctionsService,    private dataService: DataService, private nav: NavController) {
+  constructor(public fun: FunctionsService,    public dataService: DataService, private nav: NavController) {
 
   }
 

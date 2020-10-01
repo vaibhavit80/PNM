@@ -28,6 +28,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [OrderinfoPage]
+  declarations: []
 })
 export class OrderinfoPageModule {}

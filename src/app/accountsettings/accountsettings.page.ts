@@ -20,7 +20,7 @@ export class AccountsettingsPage implements OnInit {
 
   items = [
     { name: 'Country/Region', url: 'country' },
-    { name: 'Update Profile', url: '' },
+    { name: 'Update Profile', url: 'update-profile' },
     { name: 'Change Email Address', url: 'changeemail' },
     { name: 'Change Password', url: 'changepassword' },
     { name: 'Deactivate Account', url: 'deactivate' }

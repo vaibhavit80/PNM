@@ -25,7 +25,7 @@ export class NotificationPage implements OnInit {
 
   data: Array<HomeTab> = [];
 
-  constructor(private dataService: DataService, private menuCtrl: MenuController) {
+  constructor(public dataService: DataService, private menuCtrl: MenuController) {
     this.data = dataService.notifications_tab;
     this.segment = this.data[0].title;
     this.notifications = dataService.notifications;
@@ -38,7 +38,7 @@ export class NotificationPage implements OnInit {
     this.menuCtrl.enable(false, 'end');
     this.menuCtrl.enable(true, 'start');
   }
-
+public slideOpts : any[];
   async change() {
     await this.slides.getActiveIndex().then(d => this.index = d);
     this.segment = this.data[this.index].title;

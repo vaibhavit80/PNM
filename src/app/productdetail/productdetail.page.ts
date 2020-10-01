@@ -36,8 +36,8 @@ export class ProductdetailPage implements OnInit {
 
   constructor(
     private menuCtrl: MenuController,
-    private fun: FunctionsService,
-    private dataService: DataService,
+    public fun: FunctionsService,
+    public dataService: DataService,
     private nav: NavController) {
 
     this.product = dataService.current_product;

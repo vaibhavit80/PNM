@@ -18,7 +18,7 @@ import { MenuController } from '@ionic/angular';
 })
 export class NotificationssettingsPage implements OnInit {
 
-  constructor(private fun: FunctionsService, private menuCtrl: MenuController) { }
+  constructor(public fun: FunctionsService, private menuCtrl: MenuController) { }
 
   ngOnInit() {
   }

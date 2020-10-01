@@ -16,9 +16,11 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { AppComponent } from './app.component';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { InfomodalPage } from './infomodal/infomodal.page';
 import { HttpClientModule } from '@angular/common/http'
+import { Device } from '@ionic-native/device/ngx';
 @NgModule({
   declarations: [AppComponent, InfomodalPage],
   entryComponents: [InfomodalPage],
@@ -29,7 +31,8 @@ import { HttpClientModule } from '@angular/common/http'
     HttpClientModule
   ],
   providers: [
-    StatusBar,
+    Geolocation,
+    StatusBar,Device,
     SplashScreen,GooglePlus,Facebook,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

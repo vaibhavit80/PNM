@@ -23,7 +23,7 @@ export class InnerhomeComponent implements OnInit {
 
   @Input() recieved_data: Array<Product>;
 
-  constructor(private fun: FunctionsService, private nav: NavController) {
+  constructor(public fun: FunctionsService, private nav: NavController) {
   }
 
   ngOnInit() {

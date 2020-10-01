@@ -23,7 +23,7 @@ export class FaqsPage implements OnInit {
   faqs: any;
   questions: Array<string>;
 
-  constructor(private fun: FunctionsService, private dataService: DataService, private modalController: ModalController, private menuCtrl: MenuController) {
+  constructor(public fun: FunctionsService, public dataService: DataService, private modalController: ModalController, private menuCtrl: MenuController) {
     this.faqs = dataService.faqs;
     this.questions = Object.keys(this.faqs);
   }

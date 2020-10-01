@@ -32,7 +32,7 @@ export class ProductComponent implements OnInit {
   liked = false;
   constructor(public alertController: AlertController,
     private socialSharing: SocialSharing,
-    private fun: FunctionsService, private dataService: DataService) { }
+    public fun: FunctionsService, public dataService: DataService) { }
 
   ngOnInit() {
   }

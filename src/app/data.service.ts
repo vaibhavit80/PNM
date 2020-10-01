@@ -12,7 +12,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
+import { Device } from '@ionic-native/device/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { environment } from 'src/environments/environment';
+import { FunctionsService } from './functions.service';
 export class HomeTab {
   title: string
 };
@@ -79,18 +82,31 @@ export class Product {
   };
   buyer_guarantee: string
 }
+export class UserDO {
+  id: any;
+  fname: string;
+  lname: string;
+  mobile: string;
+  email: string;
+  uid: string;
+  password: string;
+  did: string;
+  aid: string;
+  latitude: any;
+  longitude: any;
+}
 export class User {
   id: any;
   fname: string;
   lname: string;
   mobile: string;
   email: string;
-  password: string;
   address: Array<Address>;
-  billing: Array<any>;
   uid: string;
   did: string;
-  aid: string
+  aid: string;
+  latitude: any;
+  longitude: any;
 }
 
 export class Address {
@@ -132,7 +148,7 @@ export class Cart {
 }
 export class AuthData {
   authstatus:boolean;
-  userInfo: User
+  useremail: string;
 }
 export class Order {
   id:any;
@@ -151,13 +167,22 @@ export class OrderProduct {
   amount:any;
   quantity: any;
 }
+export class BillingInfo {
+  card_number:string;
+  expiry_date: string;
+  isSave : boolean ;
+}
 @Injectable({
   providedIn: 'root'
 })
 
 export class DataService {
-
-  constructor(private http: HttpClient) { }
+DeviceId:any;
+UUIDs:any;
+  constructor(   public fun: FunctionsService, private geolocation: Geolocation,private http: HttpClient,private device: Device) {
+    this.DeviceId = this.device.uuid;
+    this.UUIDs = uuid();
+   }
 // return AuthData object
   login(_email: string , _password: string): Observable<any> {
     var request={email: _email , password: _password}
@@ -166,9 +191,16 @@ export class DataService {
       .set('Content-Type', 'application/json')
     });
   }
+  changeLocation(_email: string , _latitude: any,_longitude:any): Observable<any> {
+    var request={email: _email , latitude: _latitude , longitude:_longitude}
+    return this.http.post(environment.apiURL + 'updateLocation', request, {
+      headers: new HttpHeaders()
+      .set('Content-Type', 'application/json')
+    });
+  }
 // return simple bool value
-  signup(data: User): Observable<any> {
-    return this.http.put(environment.apiURL + 'signup', data, {
+  signup(data: UserDO): Observable<any> {
+    return this.http.post(environment.apiURL + 'postUser', data, {
       headers: new HttpHeaders()
       .set('Content-Type', 'application/json')
     });
@@ -183,6 +215,7 @@ export class DataService {
   getCategories():Array<Category>{
     return this.Categories;
   }
+  
   // return Array of distinct Company object
   // getCompanies(_categoryId: any): Observable<any> {
   //   return this.http.get(environment.apiURL + 'getCompanies', {
@@ -269,7 +302,51 @@ export class DataService {
       return [];
     }
   }
+
+  setCurrentUserDetail(user : UserDO){
+   this.current_user.address = [];
+   this.current_user.aid = user.aid;
+   this.current_user.did = user.did;
+   this.current_user.email = user.email;
+   this.current_user.fname = user.email;
+   this.current_user.latitude = user.latitude;
+   this.current_user.lname = user.lname;
+   this.current_user.longitude = user.longitude;
+   this.current_user.mobile = user.mobile;
+  }
   // returns Array of Order object
+  updateLocation(email: string)
+  {
+    this.geolocation.getCurrentPosition().then((resp) => {
+    this.current_user.latitude = resp.coords.latitude;
+    this.current_user.longitude = resp.coords.longitude;
+      alert(resp.coords.latitude);
+      alert(resp.coords.longitude);
+           this.changeLocation(email,resp.coords.latitude,resp.coords.longitude).subscribe(data => {
+            // tslint:disable-next-line: no-debugger
+            if(data.Error === true)
+            { 
+              this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
+              return;
+            }
+            this.fun.presentToast('Live location updated', true, 'bottom', 2100);
+          },
+          error => {
+            this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
+          });
+     }).catch((error) => {
+      this.current_user.latitude = 0;
+      this.current_user.longitude = 0;
+      this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
+     });
+     
+     //let watch = this.geolocation.watchPosition();
+     //watch.subscribe((data) => {
+      // data can be a set of coordinates, or an error (if an error occurred).
+      // data.coords.latitude
+      // data.coords.longitude
+     //});
+  }
   // getOrders(_userId : any): Observable<any> {
   //   return this.http.get(environment.apiURL + 'getOrders', {
   //     params: {
@@ -313,6 +390,13 @@ export class DataService {
       this.recent.push(data);
     }
   }
+  addtoBilling(data : BillingInfo) {
+    var data1 =  this.BillingInfos.filter(x => x.card_number === data.card_number);
+    if(data1.length === 0){
+      this.BillingInfos.push(data);
+    }
+  }
+
   current_Product:Product;
   noOfCart: number = 0;
   // returns OrderProduct object
@@ -486,13 +570,14 @@ CategoryTabs: Array<CategoryTabs> = [
     aid: 'ASBB-ASBB-C871-0345',
     lname: 'Vashistha',
     mobile: '773779890',
+    latitude: 0,
+    longitude: 0,
     email: 'admin@gmail.com',
-    password:'1234',
-    billing: [{card_number:'3124',expiry_date:'12/22'},{card_number:'4564',expiry_date:'03/25'}],
     address: [{ first_name: 'Vaibhav', last_name: 'Vashistha',address_line_1: 'ghar', address_line_2: 'ghar', city: 'jaipur',user_id:1, phone_number: 1125532553, zipcode: 12345, country: 'India',  state: 'Rajasthan' },
     { first_name: 'Mrityunjaya', last_name: 'Tiwari',address_line_1: 'office', address_line_2: 'Office', city: 'Delhi',user_id:1,  phone_number: 1125532553, zipcode: 12345, country: 'India',  state: 'Delhi' }]
   };
-
+  BillingInfos: Array<BillingInfo> = [{card_number:'3124',expiry_date:'12/22',isSave:true},
+  {card_number:'4564',expiry_date:'03/25',isSave:true}]
   wish_cash = {
     currency: '₹',
     amount: 0.00,

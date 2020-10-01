@@ -11,7 +11,7 @@
 
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController, NavController, AlertController } from '@ionic/angular';
+import { ToastController, NavController, AlertController, LoadingController } from '@ionic/angular';
 import { DataService } from './data.service';
 import { resolve } from 'q';
 
@@ -20,9 +20,10 @@ import { resolve } from 'q';
   providedIn: 'root'
 })
 export class FunctionsService {
-
+  isLoading = false;
   constructor(
     public dataService: DataService,
+    public loadingController: LoadingController,
     private router: Router,
     private toastController: ToastController,
     private nav: NavController, public alertController: AlertController) { }
@@ -57,7 +58,56 @@ export class FunctionsService {
       this.nav.navigateForward('/Checkout');
     }
   }
+  async showloader(msgdata: string) {
+    this.isLoading = true;
+    return await this.loadingController.create({
+      message: msgdata
+    }).then(a => {
+      a.present().then(() => {
+        console.log('presented');
+        if (!this.isLoading) {
+          a.dismiss().then(() => console.log('abort presenting'));
+        }
+      });
+    });
+  }
 
+  async dismissLoader() {
+    this.isLoading = false;
+    return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+  }
+
+  waitLoader(msgdata: string , waitTime: number) {
+   this.loadingController.create({
+      message: msgdata,
+      duration: waitTime
+    }).then(a => {
+      a.present();
+    });
+  }
+
+  async presentAlert(_header: any, _message: any) {
+    const alert = await this.alertController.create({
+      header: _header,
+      message: _message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+  // async presentToast(msgtype = 'dark', message) {
+  //   const toast = await this.toastController.create({
+  //     message,
+  //     color: msgtype.toLowerCase() === 'error' ? 'danger' : (msgtype.toLowerCase() === 'warning' ? 'dark' :
+  //                             (msgtype.toLowerCase() === 'info' ? 'dark' : 'dark')),
+  //     showCloseButton: true,
+  //     position: msgtype.toLowerCase() === 'error' ? 'top' : (msgtype.toLowerCase() === 'warning' ? 'top' :
+  //     (msgtype.toLowerCase() === 'info' ? 'bottom' : 'bottom')),
+  //     closeButtonText: 'close',
+  //     duration: 4000
+  //   });
+  //   toast.present();
+  // }
   async presentToast(message, show_button, position, duration) {
     const toast = await this.toastController.create({
       message: message,

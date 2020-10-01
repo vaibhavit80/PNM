@@ -19,7 +19,7 @@ import { MenuController } from '@ionic/angular';
 })
 export class ManagepaymentsPage implements OnInit {
 
-  constructor(private dataService: DataService, private fun: FunctionsService, private menuCtrl: MenuController) { }
+  constructor(public dataService: DataService, public fun: FunctionsService, private menuCtrl: MenuController) { }
 
   ngOnInit() {
   }

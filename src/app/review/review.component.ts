@@ -22,7 +22,7 @@ export class ReviewComponent implements OnInit {
   @Input() product: Product;
   @Input() bool: boolean;
 
-  constructor(private fun: FunctionsService) { }
+  constructor(public fun: FunctionsService) { }
 
   ngOnInit() {
   }

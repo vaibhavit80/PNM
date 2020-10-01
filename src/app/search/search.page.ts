@@ -24,7 +24,7 @@ export class SearchPage implements OnInit {
   recent = [];
   vehno = 6;
   searchterm = '';
-  constructor(private menuCtrl: MenuController, private fun: FunctionsService, private dataService: DataService, private nav: NavController) {
+  constructor(private menuCtrl: MenuController, public fun: FunctionsService, public dataService: DataService, private nav: NavController) {
     this.vehicles = dataService.getvehicle_type();
     this.recent = dataService.recent;
   }

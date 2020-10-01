@@ -29,8 +29,8 @@ export class RewardsPage implements OnInit {
 
   subtab = ['Available', 'Used'];
   sub;
-
-  constructor(private dataService: DataService, private fun: FunctionsService, private menuCtrl: MenuController) {
+  public slideOpts : any[];
+  constructor(public dataService: DataService, public fun: FunctionsService, private menuCtrl: MenuController) {
     this.data = dataService.rewards_tab;
     this.segment = this.data[0].title;
     this.rewards = dataService.rewards;

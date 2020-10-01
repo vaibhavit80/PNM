@@ -23,11 +23,11 @@ export class WishcashPage implements OnInit {
 
   index = 0;
   segment = '';
-
+  public slideOpts : any[];
   data = [{ title: 'Info' },
   { title: 'History' }];
 
-  constructor(private fun: FunctionsService, private dataService: DataService, private menuCtrl: MenuController) {
+  constructor(public fun: FunctionsService, public dataService: DataService, private menuCtrl: MenuController) {
     this.segment = this.data[0].title;
     this.menuCtrl.enable(false, 'end');
   }

@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 import { FunctionsService } from '../functions.service';
 import { MenuController, ModalController, Platform } from '@ionic/angular';
 import { InfomodalPage } from '../infomodal/infomodal.page';
-import { DataService } from '../data.service';
+import { AuthData, DataService, UserDO } from '../data.service';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
@@ -21,24 +21,47 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-
+  private secureKey: string;
+  private secureIV: string;
+  private authData: AuthData;
   email = '';
   password = '';
 userData: any;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private fun: FunctionsService,
+    public fun: FunctionsService,
     private menuCtrl: MenuController,
     private modalController: ModalController,
     private googlePlus: GooglePlus,
     public fb: Facebook,
     private data: DataService) {
+      let tData = localStorage.getItem('IsLogin');
+        if (tData && tData === "true"){
+          this.fun.navigate('home', false);
+        }
   }
   googleSignIn() {
     this.googlePlus.login({})
-      .then(result => alert(JSON.stringify(result)))
-      .catch(err => alert(JSON.stringify(err)));
+    .then(res => {
+      console.log(res);
+      let user: UserDO = new UserDO();
+      user.aid = this.data.UUIDs();
+      user.did = this.data.DeviceId();
+      user.fname = res.givenName;
+      // this.displayName = res.displayName;
+      // this.familyName = res.familyName;
+      // this.givenName = res.givenName;
+      // this.userId = res.userId;
+      // this.imageUrl = res.imageUrl;
+      user.email = res.email;
+      this.saveUser(user);
+    })
+    .catch(err => {
+      localStorage.setItem('user', 'NA');
+      localStorage.setItem('IsLogin', "false");
+      this.fun.presentToast('Error logging into Google', true, 'bottom', 2100);
+    });
   }
   FacebookSignIn() {
     // Login with permissions
@@ -53,42 +76,45 @@ userData: any;
             var fb_token = res.authResponse.accessToken;
 
             // Get user infos from the API
-            this.fb.api("/me?fields=name,gender,birthday,email", []).then((user) => {
+            this.fb.api("/me?fields=name,gender,birthday,email", []).then((res) => {
 
                 // Get the connected user details
-                var gender    = user.gender;
-                var birthday  = user.birthday;
-                var name      = user.name;
-                var email     = user.email;
+                // var gender    = user.gender;
+                // var birthday  = user.birthday;
+                // var name      = user.name;
+                // var email     = user.email;
+                let user: UserDO = new UserDO();
+                user.aid = this.data.UUIDs();
+                user.did = this.data.DeviceId();
+                user.fname = res.name;
+                user.email = res.email;
+                this.saveUser(user);
 
-                console.log("Gender : " + gender);
-                console.log("Birthday : " + birthday);
-                console.log("Name : " + name);
-                console.log("Email : " + email);
-
-                // => Open user session and redirect to the next page
-
-            });
+      })
+      .catch(err => {
+        localStorage.setItem('user', 'NA');
+        localStorage.setItem('IsLogin', "false");
+      });
 
         } 
         // An error occurred while loging-in
         else {
-
-            console.log("An error occurred...");
-
+          localStorage.setItem('user', 'NA');
+          localStorage.setItem('IsLogin', "false");
+            this.fun.presentToast('An error occurred...', true, 'bottom', 2100);
         }
 
-    })
-    .catch((e) => {
-        console.log('Error logging into Facebook', e);
+    }).catch(err => {
+      localStorage.setItem('user', 'NA');
+      localStorage.setItem('IsLogin', "false");
+      this.fun.presentToast('Error logging into Facebook', true, 'bottom', 2100);
     });
   }
   ngOnInit() {
-    //  this.storage.get('authData').then(tData => {
-    //     if (tData){
-    //     this.fun.navigate('home', false);
-    //     }
-    // });
+    let tData = localStorage.getItem('IsLogin');
+        if (tData && tData === "true"){
+          this.fun.navigate('home', false);
+        }
   }
 
   ionViewDidEnter() {
@@ -96,37 +122,69 @@ userData: any;
     this.menuCtrl.enable(false, 'end');
     this.splashScreen.hide();
   }
+saveUser(user: UserDO){
+  localStorage.setItem('user', user.email);
+  this.data.signup(user).subscribe(data => {
+    // tslint:disable-next-line: no-debugger
+    if(data.Error === true)
+    {
+      localStorage.setItem('user', 'NA');
+      localStorage.setItem('IsLogin', "false");
+      this.fun.dismissLoader();
+      this.fun.presentToast('Something went wrong!', true, 'bottom', 2100);
+      return;
+    }
+    localStorage.setItem('IsLogin', "true");
+    this.fun.dismissLoader();
+    this.fun.navigate('home', false);
+  },
+  error => {
+    localStorage.setItem('user', 'NA');
+    localStorage.setItem('IsLogin', "false");
+    this.fun.dismissLoader();
+    this.fun.presentToast('Invalid Request!', true, 'bottom', 2100);
+  });
 
+}
   signin() {
     this.platform.ready().then(() => {
+      this.fun.showloader("Verifying User...");
       if (this.platform.is('cordova')) {
         if (this.fun.validateEmail(this.email)) {
           if(this.email === 'admin@gmail.com' && this.password === '1234')
             {
-              //this.storage.set('authData', true);
-                this.fun.navigate('home', false);
+              localStorage.setItem('user', this.email);
+              localStorage.setItem('IsLogin', "true");
+              this.fun.navigate('home', false);
+              this.fun.dismissLoader();
             }
-            else{this.fun.presentToast('Invalid Login data!', true, 'bottom', 2100); return;}
+            else{localStorage.setItem('IsLogin', "false");this.fun.dismissLoader();this.fun.presentToast('Invalid Login data!', true, 'bottom', 2100); return;}
           // this.data.login(this.email , this.password).subscribe(data => {
           //   // tslint:disable-next-line: no-debugger
           //   if(data.Error === true)
-          //   {
+          //   { localStorage.setItem('IsLogin', "false");
           //     this.fun.presentToast('Something went wrong!', true, 'bottom', 2100);
+          //     this.fun.dismissLoader();
           //     return;
           //   }
-          //   this.storage.set('authData', true);
+          //   this.fun.dismissLoader();
+          //   localStorage.setItem('IsLogin', "false");
           //   this.fun.navigate('home', false);
           // },
           // error => {
+          //  localStorage.setItem('IsLogin', "false");
+          //   this.fun.dismissLoader();
           //   this.fun.presentToast('Invalid Login data!', true, 'bottom', 2100);
           // });
           
         } else {
+          this.fun.dismissLoader();
           this.fun.presentToast('Wrong Input!', true, 'bottom', 2100);
         }
       } else {
+        this.fun.dismissLoader();
         this.fun.navigate('home', false);
-       // this.fun.presentToast('Invalid Login data!', true, 'bottom', 2100);
+        this.fun.presentToast('Invalid Login data!', true, 'bottom', 2100);
       }
     });
 

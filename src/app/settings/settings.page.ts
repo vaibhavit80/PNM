@@ -31,7 +31,7 @@ export class SettingsPage implements OnInit {
     { name: 'Logout', url: 'login' }
   ];
 
-  constructor(private navCtrl: NavController, private fun: FunctionsService, private menuCtrl: MenuController, private page: NavController, private dataService: DataService, private modalController: ModalController) { }
+  constructor(private navCtrl: NavController, public fun: FunctionsService, private menuCtrl: MenuController, private page: NavController, public dataService: DataService, private modalController: ModalController) { }
 
   ngOnInit() {
   }
@@ -51,6 +51,8 @@ export class SettingsPage implements OnInit {
   }
 
   logout(){
+    localStorage.setItem('user', "");
+    localStorage.setItem('IsLogin', "false");
     this.page.navigateRoot('/login');
   }
 

@@ -23,18 +23,18 @@
   position: relative;
 }
 .mybg {
-  background-color: var(--ion-color-danger) !important;
+  background-color: var(--ion-color-mytheme) !important;
 }
 .mycolor {
-  color: var(--ion-color-danger) !important;
+  color: var(--ion-color-mytheme) !important;
 }
 .ion-color-mytheme {
-  --ion-color-base: var(--ion-color-danger) !important;
-  --ion-color-base-rgb: var(--ion-color-danger-rgb) !important;
-  --ion-color-contrast: var(--ion-color-danger-contrast) !important;
-  --ion-color-contrast-rgb: var(--ion-color-danger-contrast-rgb) !important;
-  --ion-color-shade: var(--ion-color-danger-shade) !important;
-  --ion-color-tint: var(--ion-color-danger-tint) !important;
+  --ion-color-base: var(--ion-color-mytheme) !important;
+  --ion-color-base-rgb: var(--ion-color-mytheme-rgb) !important;
+  --ion-color-contrast: var(--ion-color-mytheme-contrast) !important;
+  --ion-color-contrast-rgb: var(--ion-color-mytheme-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-color-mytheme-shade) !important;
+  --ion-color-tint: var(--ion-color-mytheme-tint) !important;
 }
 .ion-color-fb {
   --ion-color-base: var(--ion-color-fb) !important;

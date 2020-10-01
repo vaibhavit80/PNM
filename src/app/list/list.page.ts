@@ -20,7 +20,7 @@ export class ListPage implements OnInit {
 
   @Input() data: Array<NotificationsCard>;
 
-  constructor(private fun: FunctionsService) { }
+  constructor(public fun: FunctionsService) { }
 
   ngOnInit() {
   }

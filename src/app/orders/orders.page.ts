@@ -22,7 +22,7 @@ export class OrdersPage implements OnInit {
 
   orders: Array<Order>;
   totalCrtNo:number=0;
-  constructor(private menuCtrl: MenuController, private modalController: ModalController, private fun: FunctionsService, private dataService: DataService) {
+  constructor(private menuCtrl: MenuController, private modalController: ModalController, public fun: FunctionsService, public dataService: DataService) {
     this.orders = dataService.getOrders(1);
     this.totalCrtNo = this.dataService.getTotalCartbyUser(this.dataService.current_user.id);
 

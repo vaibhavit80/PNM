@@ -44,7 +44,8 @@ const routes: Routes = [
   { path: 'accountsettings', loadChildren: './accountsettings/accountsettings.module#AccountsettingsPageModule' },
   { path: 'country', loadChildren: './country/country.module#CountryPageModule' },
   { path: 'changeemail', loadChildren: './changeemail/changeemail.module#ChangeemailPageModule' },
-  { path: 'changepassword', loadChildren: './changepassword/changepassword.module#ChangepasswordPageModule' }
+  { path: 'changepassword', loadChildren: './changepassword/changepassword.module#ChangepasswordPageModule' },  { path: 'update-profile', loadChildren: './update-profile/update-profile.module#UpdateProfilePageModule' }
+
 ];
 
 @NgModule({

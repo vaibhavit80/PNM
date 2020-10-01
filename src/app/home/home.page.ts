@@ -4,7 +4,6 @@ import { MenuController, IonSlides } from '@ionic/angular';
 import { FunctionsService } from '../functions.service';
 import { DataService, HomeTab,  CategoryTabs, Category, Product } from '../data.service';
 import { ActivatedRoute } from '@angular/router';
-
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -27,9 +26,10 @@ searchTerm = '';
   constructor(
     private activatedRoute: ActivatedRoute,
     private menuCtrl: MenuController,
-    private fun: FunctionsService,
-    private dataService: DataService) {
-      debugger;
+    public fun: FunctionsService,
+    public dataService: DataService) {
+    let email = localStorage.getItem('user');
+    dataService.updateLocation(email);
     this.data = dataService.getCategories();
     const d = this.activatedRoute.snapshot.paramMap.get('id');
     if (d) {
@@ -45,7 +45,7 @@ searchTerm = '';
     this.menuCtrl.enable(true, 'start');
     this.menuCtrl.enable(true, 'end');
   }
-
+ 
   seg(event) {
     this.segment = event.detail.value;
     this.products = this.dataService.getProductsList(parseInt(this.segment));
