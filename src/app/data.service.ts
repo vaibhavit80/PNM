@@ -15,7 +15,7 @@ import { v4 as uuid } from 'uuid';
 import { Device } from '@ionic-native/device/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { environment } from 'src/environments/environment';
-import { FunctionsService } from './functions.service';
+//import { FunctionsService } from './functions.service';
 export class HomeTab {
   title: string
 };
@@ -102,6 +102,7 @@ export class User {
   mobile: string;
   email: string;
   address: Array<Address>;
+  password: string;
   uid: string;
   did: string;
   aid: string;
@@ -179,42 +180,42 @@ export class BillingInfo {
 export class DataService {
 DeviceId:any;
 UUIDs:any;
-  constructor(   public fun: FunctionsService, private geolocation: Geolocation,private http: HttpClient,private device: Device) {
+  constructor(   private geolocation: Geolocation,private http: HttpClient,private device: Device) {
     this.DeviceId = this.device.uuid;
     this.UUIDs = uuid();
    }
 // return AuthData object
   login(_email: string , _password: string): Observable<any> {
     var request={email: _email , password: _password}
-    return this.http.put(environment.apiURL + 'login', request, {
+    return this.http.post(environment.apiURL + 'users/login', request, {
       headers: new HttpHeaders()
       .set('Content-Type', 'application/json')
     });
   }
   changeLocation(_email: string , _latitude: any,_longitude:any): Observable<any> {
     var request={email: _email , latitude: _latitude , longitude:_longitude}
-    return this.http.post(environment.apiURL + 'updateLocation', request, {
+    return this.http.post(environment.apiURL + 'users/updateLocation', request, {
       headers: new HttpHeaders()
       .set('Content-Type', 'application/json')
     });
   }
 // return simple bool value
   signup(data: UserDO): Observable<any> {
-    return this.http.post(environment.apiURL + 'postUser', data, {
+    return this.http.post(environment.apiURL + 'users/adduser', data, {
       headers: new HttpHeaders()
       .set('Content-Type', 'application/json')
     });
   }
   // return Array of distinct Categories object
-  // getCategories(): Observable<any> {
-  //   return this.http.get(environment.apiURL + 'getCategories', {
-  //     headers: new HttpHeaders()
-  //     .set('Content-Type', 'application/json')
-  //   });
-  // }
-  getCategories():Array<Category>{
-    return this.Categories;
+  getCategories(): Observable<any> {
+     return this.http.get(environment.apiURL + 'Categories/GetCategories', {
+       headers: new HttpHeaders()
+       .set('content-type', 'application/json')
+     });
   }
+  // getCategories():Array<Category>{
+  //   return this.Categories;
+  // }
   
   // return Array of distinct Company object
   // getCompanies(_categoryId: any): Observable<any> {
@@ -238,23 +239,25 @@ UUIDs:any;
     return this.AllCompanies;
   }
   // return Array of Product object
-  // getProductsList(_searchParams :SearchParams): Observable<any> {
-  //   return this.http.post(environment.apiURL + 'getProductsList',_searchParams, {
-  //     headers: new HttpHeaders()
-  //     .set('Content-Type', 'application/json')
-  //   });
+   getProductsList(_categoryId: any): Observable<any> {
+     return this.http.get(environment.apiURL + 'Products/getProductList', { params: {
+           categoryId: _categoryId
+           },
+       headers: new HttpHeaders()
+       .set('Content-Type', 'application/json')
+     });
+   }
+  // getProductsList(_categoryId: any): Array<Product> {
+  //   var data =  this.CategoryTabs.filter(x => x.CategoryId === _categoryId);
+  //   if(data.length > 0){
+  //     // if(this.searchParams && this.searchParams.searchterm !== ''){
+  //     //   return data[0].Products.filter(x => x.name.includes(this.searchParams.searchterm));
+  //     // }
+  //   return data[0].Products;
+  // }else{
+  //   return [];
   // }
-  getProductsList(_categoryId: any): Array<Product> {
-    var data =  this.CategoryTabs.filter(x => x.CategoryId === _categoryId);
-    if(data.length > 0){
-      // if(this.searchParams && this.searchParams.searchterm !== ''){
-      //   return data[0].Products.filter(x => x.name.includes(this.searchParams.searchterm));
-      // }
-    return data[0].Products;
-  }else{
-    return [];
-  }
-  }
+  // }
   // return Product object
   // getProductDetail(_productId :any): Observable<any> {
   //   return this.http.get(environment.apiURL + 'getProductDetail', {
@@ -312,6 +315,7 @@ UUIDs:any;
    this.current_user.fname = user.fname;
    this.current_user.latitude = user.latitude;
    this.current_user.lname = user.lname;
+   this.current_user.password = user.password;
    this.current_user.longitude = user.longitude;
    this.current_user.mobile = user.mobile;
   }
@@ -319,26 +323,28 @@ UUIDs:any;
   updateLocation(email: string)
   {
     this.geolocation.getCurrentPosition().then((resp) => {
-    this.current_user.latitude = resp.coords.latitude;
-    this.current_user.longitude = resp.coords.longitude;
-      alert(resp.coords.latitude);
-      alert(resp.coords.longitude);
+
            this.changeLocation(email,resp.coords.latitude,resp.coords.longitude).subscribe(data => {
             // tslint:disable-next-line: no-debugger
             if(data.Error === true)
             { 
-              this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
+              this.current_user.latitude = 0;
+              this.current_user.longitude = 0;
+             // this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
               return;
             }
-            this.fun.presentToast('Live location updated', true, 'bottom', 2100);
+            this.setCurrentUserDetail(data);
+           // this.fun.presentToast('Live location updated', true, 'bottom', 2100);
           },
           error => {
-            this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
+            this.current_user.latitude = 0;
+            this.current_user.longitude = 0;
+          //  this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
           });
      }).catch((error) => {
       this.current_user.latitude = 0;
       this.current_user.longitude = 0;
-      this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
+     // this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
      });
      
      //let watch = this.geolocation.watchPosition();
@@ -573,6 +579,7 @@ CategoryTabs: Array<CategoryTabs> = [
     mobile: '773779890',
     latitude: 0,
     longitude: 0,
+    password: '12345',
     email: 'admin@gmail.com',
     address: [{ first_name: 'Vaibhav', last_name: 'Vashistha',address_line_1: 'ghar', address_line_2: 'ghar', city: 'jaipur',user_id:1, phone_number: 1125532553, zipcode: 12345, country: 'India',  state: 'Rajasthan' },
     { first_name: 'Mrityunjaya', last_name: 'Tiwari',address_line_1: 'office', address_line_2: 'Office', city: 'Delhi',user_id:1,  phone_number: 1125532553, zipcode: 12345, country: 'India',  state: 'Delhi' }]

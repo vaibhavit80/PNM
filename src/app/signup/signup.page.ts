@@ -50,6 +50,7 @@ export class SignupPage implements OnInit {
           this.fun.presentToast('Something went wrong!', true, 'bottom', 2100);
           return;
         }
+        this.data.setCurrentUserDetail(data);
         localStorage.setItem('IsLogin', "true");
         this.fun.dismissLoader();
         this.fun.navigate('home', false);

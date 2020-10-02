@@ -134,6 +134,7 @@ saveUser(user: UserDO){
       this.fun.presentToast('Something went wrong!', true, 'bottom', 2100);
       return;
     }
+    this.data.setCurrentUserDetail(data);
     localStorage.setItem('IsLogin', "true");
     this.fun.dismissLoader();
     this.fun.navigate('home', false);
@@ -151,41 +152,33 @@ saveUser(user: UserDO){
       this.fun.showloader("Verifying User...");
       if (this.platform.is('cordova')) {
         if (this.fun.validateEmail(this.email)) {
-          if(this.email === 'admin@gmail.com' && this.password === '1234')
-            {
-              localStorage.setItem('user', this.email);
-              localStorage.setItem('IsLogin', "true");
-              this.fun.navigate('home', false);
+             this.data.login(this.email , this.password).subscribe(data => {
+             // tslint:disable-next-line: no-debugger
+             if(data !== "logged In")
+             { localStorage.setItem('IsLogin', "false");
+               this.fun.presentToast('Something went wrong!', true, 'bottom', 2100);
               this.fun.dismissLoader();
-            }
-            else{localStorage.setItem('IsLogin', "false");this.fun.dismissLoader();this.fun.presentToast('Invalid Login data!', true, 'bottom', 2100); return;}
-          // this.data.login(this.email , this.password).subscribe(data => {
-          //   // tslint:disable-next-line: no-debugger
-          //   if(data.Error === true)
-          //   { localStorage.setItem('IsLogin', "false");
-          //     this.fun.presentToast('Something went wrong!', true, 'bottom', 2100);
-          //     this.fun.dismissLoader();
-          //     return;
-          //   }
-          //   this.fun.dismissLoader();
-          //   localStorage.setItem('IsLogin', "false");
-          //   this.fun.navigate('home', false);
-          // },
-          // error => {
-          //  localStorage.setItem('IsLogin', "false");
-          //   this.fun.dismissLoader();
-          //   this.fun.presentToast('Invalid Login data!', true, 'bottom', 2100);
-          // });
+               return;
+             }
+             this.fun.dismissLoader();
+             localStorage.setItem('IsLogin', "false");
+             this.fun.navigate('home', false);
+           },
+           error => {
+            localStorage.setItem('IsLogin', "false");
+             this.fun.dismissLoader();
+             this.fun.presentToast('Invalid Login data!', true, 'bottom', 2100);
+           });
           
         } else {
           this.fun.dismissLoader();
           this.fun.presentToast('Wrong Input!', true, 'bottom', 2100);
         }
-      } else {
-        this.fun.dismissLoader();
-        this.fun.navigate('home', false);
-        this.fun.presentToast('Invalid Login data!', true, 'bottom', 2100);
-      }
+       } else {
+         this.fun.dismissLoader();
+         this.fun.navigate('home', false);
+         this.fun.presentToast('Invalid Login data!', true, 'bottom', 2100);
+       }
     });
 
   }

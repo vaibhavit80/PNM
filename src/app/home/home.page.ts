@@ -30,15 +30,44 @@ searchTerm = '';
     public dataService: DataService) {
     let email = localStorage.getItem('user');
     dataService.updateLocation(email);
-    this.data = dataService.getCategories();
-    const d = this.activatedRoute.snapshot.paramMap.get('id');
-    if (d) {
-      this.segment = this.data[parseInt(d, 10)].Id;
-    } else {
-      this.segment = this.data[0].Id;
-    }
-    this.searchTerm = this.dataService.searchParams.searchterm;
-    this.products = dataService.getProductsList(this.data[0].Id);
+     dataService.getCategories().subscribe(data1 => {
+      // tslint:disable-next-line: no-debugger
+      if(data1.Error === true)
+      { 
+
+        this.data = []
+        return;
+      }
+      this.data = data1;
+      const d = this.activatedRoute.snapshot.paramMap.get('id');
+      if (d) {
+        this.segment = this.data[parseInt(d, 10)].Id;
+      } else {
+        this.segment = this.data[0].Id;
+      }
+      this.searchTerm = this.dataService.searchParams.searchterm;
+      dataService.getProductsList(this.data[0].Id).subscribe(prod => {
+        // tslint:disable-next-line: no-debugger
+        if(prod.Error === true)
+        { 
+  
+          this.products = []
+          return;
+        }
+        this.products = prod;
+      },
+      error => {
+        this.products = []
+      //  this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
+      });
+      
+     // this.fun.presentToast('Live location updated', true, 'bottom', 2100);
+    },
+    error => {
+      this.data = []
+    //  this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
+    });
+   
   }
 
   ionViewDidEnter() {
@@ -48,7 +77,21 @@ searchTerm = '';
  
   seg(event) {
     this.segment = event.detail.value;
-    this.products = this.dataService.getProductsList(parseInt(this.segment));
+
+    this.dataService.getProductsList(parseInt(this.segment)).subscribe(prod => {
+      // tslint:disable-next-line: no-debugger
+      if(prod.Error === true)
+      { 
+
+        this.products = []
+        return;
+      }
+      this.products = prod;
+    },
+    error => {
+      this.products = []
+    //  this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
+    });
   }
 
   drag() {
@@ -68,7 +111,20 @@ searchTerm = '';
   async change() {
     await this.slides.getActiveIndex().then(data => this.index = data);
     this.segment = this.data[this.index].Id;
-    this.products = this.dataService.getProductsList(this.data[this.index].Id);
+    this.dataService.getProductsList(this.data[this.index].Id).subscribe(prod => {
+      // tslint:disable-next-line: no-debugger
+      if(prod.Error === true)
+      { 
+
+        this.products = []
+        return;
+      }
+      this.products = prod;
+    },
+    error => {
+      this.products = []
+    //  this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
+    });
     this.drag();
   }
 
