@@ -17,7 +17,6 @@ export class HomePage {
   products: Array<Product> = [];
   index = 0;
   data: Array<Category> = [];
- 
   slideOpts = {
     effect: 'flip',
     zoom: false
@@ -28,14 +27,13 @@ searchTerm = '';
     private menuCtrl: MenuController,
     public fun: FunctionsService,
     public dataService: DataService) {
-    let email = localStorage.getItem('user');
+    const email = localStorage.getItem('user');
     dataService.updateLocation(email);
      dataService.getCategories().subscribe(data1 => {
       // tslint:disable-next-line: no-debugger
-      if(data1.Error === true)
-      { 
+      if (data1.Error === true) {
 
-        this.data = []
+        this.data = [];
         return;
       }
       this.data = data1;
@@ -48,55 +46,55 @@ searchTerm = '';
       this.searchTerm = this.dataService.searchParams.searchterm;
       dataService.getProductsList(this.data[0].Id).subscribe(prod => {
         // tslint:disable-next-line: no-debugger
-        if(prod.Error === true)
-        { 
-  
-          this.products = []
+        if (prod.Error === true) {
+
+          this.products = [];
           return;
         }
         this.products = prod;
       },
       error => {
-        this.products = []
+        this.products = [];
       //  this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
       });
-      
+
      // this.fun.presentToast('Live location updated', true, 'bottom', 2100);
     },
     error => {
-      this.data = []
+      this.data = [];
     //  this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
     });
-   
+
   }
 
   ionViewDidEnter() {
     this.menuCtrl.enable(true, 'start');
     this.menuCtrl.enable(true, 'end');
   }
- 
+
   seg(event) {
     this.segment = event.detail.value;
 
+    // tslint:disable-next-line: radix
     this.dataService.getProductsList(parseInt(this.segment)).subscribe(prod => {
       // tslint:disable-next-line: no-debugger
-      if(prod.Error === true)
-      { 
+      if (prod.Error === true) {
 
-        this.products = []
+        this.products = [];
         return;
       }
       this.products = prod;
     },
     error => {
-      this.products = []
+      this.products = [];
     //  this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
     });
   }
 
   drag() {
     let distanceToScroll = 0;
-    for (let index in this.data) {
+    for (const index in this.data) {
+      // tslint:disable-next-line: radix
       if (parseInt(index) < this.index) {
         distanceToScroll = distanceToScroll + document.getElementById('seg_' + index).offsetWidth + 24;
       }
@@ -113,16 +111,15 @@ searchTerm = '';
     this.segment = this.data[this.index].Id;
     this.dataService.getProductsList(this.data[this.index].Id).subscribe(prod => {
       // tslint:disable-next-line: no-debugger
-      if(prod.Error === true)
-      { 
+      if (prod.Error === true) {
 
-        this.products = []
+        this.products = [];
         return;
       }
       this.products = prod;
     },
     error => {
-      this.products = []
+      this.products = [];
     //  this.fun.presentToast('Unable to Track location!', true, 'bottom', 2100);
     });
     this.drag();

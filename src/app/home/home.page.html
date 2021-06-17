@@ -20,8 +20,8 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar color="mytheme" class="segmenttoolbarSection">
-      <ion-segment mode="md"  (ionChange)="seg($event)" scrollable="true" id="dag" class="segSection">
-        <ion-segment-button   [attr.id]="'seg_' + i" *ngFor="let item of data; let i = index;" no-margin no-padding (ionSelect)="update(i)"
+      <ion-segment mode="md" (ionChange)="seg($event)" scrollable="true" id="dag" class="segSection">
+        <ion-segment-button  [attr.id]="'seg_' + i" *ngFor="let item of data; let i = index;" no-margin no-padding (ionSelect)="update(i)"
           class="my-btn" [value]="item.Id" [ngClass]="{'btn-active':segment == item.Id}">
           <ion-text padding-horizontal class="text">{{item.Name}}</ion-text>
         </ion-segment-button>
